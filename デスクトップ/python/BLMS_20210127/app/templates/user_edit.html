@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/user_edit" method="POST">
+    <div class="step">
+        <div class="subject">ユーザー情報変更</div>
+        <div class="title_area"> 社員番号:<input type="text" name="employee_number" required value={{values[0]}}></div>
+        <div class="title_area"> 氏名:<input type="text" name="name" required value={{values[1]}}></div>
+        <div class="title_area"> 事業部:
+            <select name="division">
+                {% for division in divishons %}
+                    {% if division == values[2] %}
+                        <option value={{division}} selected>{{division}}</option>
+                    {% else %}
+                        <option value={{division}}>{{division}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="title_area"> メールアドレス:<input type="text" name="mail_address" required value={{values[3]}}></div>
+        <div class="author_area"> パスワード:<input type="password" name="password" required value={{values[4]}}></div>
+        <div class="author_area"> ステータス:<input type="number" name="status" max="1" required value={{values[5]}}></div>
+        <div class="btns">
+            <input type="submit" value="戻る" formaction="/user_list" formmethod="GET" formnovalidate>
+            <input type="submit" value="更新">
+        </div>
+    </div>
+</form>
+{% endblock %}

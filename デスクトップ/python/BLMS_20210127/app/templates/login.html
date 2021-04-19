@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/login" method="POST">
+    <div class="step">
+        <div class="subject">ログイン</div>
+        <div class="title_area"> {{ msg }}</div>
+        <div class="title_area"> ログインID:<input type="text" name="user_id" required ></div>
+        <div class="author_area"> パスワード:<input type="password" name="password" required ></div>
+        <div class="btns">
+            <input type="submit" value="ログイン">
+            <input type="submit" value="アカウント登録" formaction="/user_registration" formmethod="GET" formnovalidate>
+        </div>
+    </div>
+</form>
+<form action="/graph_creation" method="GET">
+    <input type="submit" value="グラフ表示">
+</form>
+{% endblock %}

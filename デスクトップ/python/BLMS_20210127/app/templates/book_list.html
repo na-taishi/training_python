@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <form action="/logout" method="GET">
+        {{ name }}<input type="submit" value="ログアウト">
+    </form>
+    <form action="/search_books" method="GET">
+        <select name="selection">
+            <option value="タイトル">タイトル</option>
+            <option value="著者">著者</option>
+            <option value="出版社">出版社</option>
+        </select>
+        <input type="search" name="search" placeholder="キーワードを入力">
+        <input type="submit" name="bt_search" value="検索">
+    </form>
+    <form action="/borrowed_list" method="GET">
+        <input type="submit" value="借用一覧">
+    </form>
+    <form action="/cart" method="GET">
+        <input type="submit" value="カート">
+    </form>
+    <form action="/book_registration" method="GET">
+        <input type="submit" value="書籍登録">
+    </form>
+</div>
+<table border="1">
+    <tr>
+        <th></th>
+        <th>タイトル</th>
+        <th>著者</th>
+        <th>出版社</th>
+        <th>総数</th>
+        <th>在庫数</th>
+        <th></th>
+    </tr>
+    {% for value in values %}
+    <form action="/book_detail" method="GET">
+        <tr>
+            <td><input type="checkbox" name="check" value={{ value[0]}} form="checkbox" {{value[12]}}></td>
+            <td>{{ value[1]}} </td>
+            <td>{{ value[2]}} </td>
+            <td>{{ value[3]}} </td>
+            <td>{{ value[7]}} </td>
+            <td>{{ value[8]}} </td>
+            <td><input type="submit" value="詳細"></td>
+            <input type="hidden" name="book_id" value={{ value[0]}}>
+            <input type="hidden" name="return_screen" value={{ title }}>
+        </tr>
+    </form>
+    {% else %}
+    <tr>
+        <td>書籍が見つかりませんでした。</td>
+    </tr>
+    {% endfor %}
+</table>
+<form id="checkbox" action="/add_cart" method="POST">
+    <input type="submit" value="カートに追加">
+</form>
+{% endblock %}

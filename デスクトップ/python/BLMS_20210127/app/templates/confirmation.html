@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>{{ msg }}</h1>
+<form action={{ bt_transition }} method="POST">
+    <div class="btns">
+        <input type="submit" value="戻る" formaction={{ bt_return }} formmethod="GET" formnovalidate>
+        <input type="submit" value={{ transition_name}}>
+    </div>
+</form>
+{% endblock %}

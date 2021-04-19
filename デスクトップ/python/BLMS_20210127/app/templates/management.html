@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <form action="/logout" method="GET">
+        {{ name }}<input type="submit" value="ログアウト">
+    </form>
+    <form action="/search_users" method="GET">
+        <select name="selection">
+            <option value="社員番号">社員番号</option>
+            <option value="社員名">社員名</option>
+            <option value="事業部">事業部</option>
+            <option value="使用可能">使用可能</option>
+            <option value="使用不能">使用不能</option>
+        </select>
+        <input type="search" name="search" placeholder="キーワードを入力">
+        <input type="submit" name="bt_search" value="検索">
+    </form>
+</div>
+<table border="1">
+    <tr>
+        <th>社員番号</th>
+        <th>社員名</th>
+        <th>事業部</th>
+        <th>メールアドレス</th>
+        <th>パスワード</th>
+        <th>登録日</th>
+        <th>更新日</th>
+        <th>ステータス</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for value in values %}
+    <form action="/change_status" method="POST">
+        <tr>
+            <td>{{ value[1]}} <input type="hidden" name="employee_number" value={{ value[1] }}></td>
+            <td>{{ value[2]}} <input type="hidden" name="name" value={{ value[2] }}></td>
+            <td>{{ value[3]}} <input type="hidden" name="division" value={{ value[3] }}></td>
+            <td>{{ value[4]}} <input type="hidden" name="mail_address" value={{ value[4] }}></td>
+            <td>{{ value[5]}} <input type="hidden" name="password" value={{ value[5] }}></td>
+            <td>{{ value[6]}} <input type="hidden" name="created_at" value={{ value[6] }}></td>
+            <td>{{ value[7]}} <input type="hidden" name="updated_at" value={{ value[7] }}></td>
+            <td>{{ value[8]}} <input type="hidden" name="status" value={{ value[8] }}></td>
+            <td><input type="submit" value="ステータス変更"></td>
+            <td><input type="submit" value="ユーザー情報変更" formaction="/user_edit" formmethod="GET"></td>
+            <td><input type="submit" value="ユーザー削除" formaction="/delete_user" formmethod="POST"></td>
+        </tr>
+    </form>
+    {% else %}
+    <tr>
+        <td>ユーザーが見つかりませんでした。</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/book_list"  method="GET">
+    <div class="step">
+        <div class="subject">書籍登録</div>
+        <div> {{ msg }}</div>
+        <div class="title_area"> タイトル:<input type="text" name="title" required></div>
+        <div class="author_area"> 著者:<input type="text" name="author" required></div>
+        <div class="title_area"> 出版社:<input type="text" name="publisher" required></div>
+        <div class="title_area"> 価格:<input type="number" name="price"></div>
+        <div class="title_area"> 購入者:<input type="text" name="buyer" value={{ buyer }}></div>
+        <div class="title_area"> 購入日:<input type="date" name="purchase_date" value={{ date}} required></div>
+        <div class="title_area"> 総数:<input type="number" name="total" value="0" required></div>
+        <div class="title_area"> ジャンル:
+            <select name="genre">
+                {% for genre in genres %}
+                    <option value={{genre}}>{{genre}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="btns">
+            <input type="submit" value="戻る" formnovalidate>
+            <input type="submit" value="登録" formaction="/book_registration" formmethod="POST">
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/book_list" method="GET">
+    <div class="step">
+        <div class="subject">編集</div>
+        <div class="title_area"> タイトル:<input type="text" name="title" required value={{ values.title }}></div>
+        <div class="author_area"> 著者:<input type="text" name="author" required value={{ values.author }}></div>
+        <div class="title_area"> 出版社:<input type="text" name="publisher" required value={{ values.publisher }}></div>
+        <div class="title_area"> 価格:<input type="number" name="price" value={{ values.price }}></div>
+        <div class="title_area"> 購入者:<input type="text" name="buyer" value={{ values.buyer }}></div>
+        <div class="title_area"> 購入日:<input type="date" name="purchase_date" required value={{ values.purchase_date }}></div>
+        <div class="title_area"> 総数:<input type="number" name="total" required value={{ values.total }}></div>
+        <div class="title_area"> ジャンル:
+            <select name="genre">
+                {% for genre in genres %}
+                    {% if genre == values.genre %}
+                        <option value={{genre}} selected>{{genre}}</option>
+                    {% else %}
+                        <option value={{genre}}>{{genre}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <input type="hidden" name="book_id" value= {{ values.book_id}}>
+        <input type="hidden" name="sc_title" value={{ title }}>
+        <div class="btns">
+            <input type="submit" value="戻る" formnovalidate>
+            <input type="submit" value="更新" formaction="/book_edit" formmethod="POST">
+        </div>
+    </div>
+</form>
+{% endblock %}

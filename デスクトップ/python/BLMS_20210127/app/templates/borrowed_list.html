@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <form action="/logout" method="GET">
+        {{ name }}<input type="submit" value="ログアウト">
+    </form>
+    <form action="/book_list" method="GET">
+        <input type="submit" value="書籍一覧">
+    </form>
+    <form action="/cart" method="GET">
+        <input type="submit" value="カート">
+    </form>
+</div>
+<table border="1">
+    <tr>
+        <th></th>
+        <th>タイトル</th>
+        <th>著者</th>
+        <th>出版社</th>
+        <th>借用日</th>
+        <th>返却予定日</th>
+        <th></th>
+    </tr>
+    {% for value in values %}
+    <form action="/book_detail" method="GET">
+        <tr>
+            <td><input type="checkbox" name="check" value={{ value[0]}} form="checkbox"></td>
+            <td>{{ value[2]}} </td>
+            <td>{{ value[3]}} </td>
+            <td>{{ value[4]}} </td>
+            <td>{{ value[5]}} </td>
+            <td>{{ value[6]}} </td>
+            <td><input type="submit" value="詳細"></td>
+            <input type="hidden" name="book_id" value={{ value[0] }}>
+            <input type="hidden" name="return_screen" value={{ title }}>
+        </tr>
+    </form>
+    {% else %}
+    <tr>
+        <td>書籍が見つかりませんでした。</td>
+    </tr>
+    {% endfor %}
+</table>
+<form id="checkbox" action="/return_book" method="POST">
+    <input type="submit" value="返却" >
+</form>
+{% endblock %}

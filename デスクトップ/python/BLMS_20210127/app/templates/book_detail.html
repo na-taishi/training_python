@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action= {{ bt_return }} method="GET">
+    <div class="step">
+        <div class="subject">詳細</div>
+        <div class="title_area"> タイトル:{{ values[1] }}<input type="hidden" name="title" value={{ values[1] }}></div>
+        <div class="author_area"> 著者:{{ values[2] }}<input type="hidden" name="author" value={{ values[2] }}></div>
+        <div class="title_area"> 出版社:{{ values[3] }}<input type="hidden" name="publisher" value={{ values[3] }}></div>
+        <div class="title_area"> 価格:{{ values[4] }}<input type="hidden" name="price" value={{ values[4] }}></div>
+        <div class="title_area"> 購入者:{{ values[5] }}<input type="hidden" name="buyer" value={{ values[5] }}></div>
+        <div class="title_area"> 購入日:{{ values[6] }}<input type="hidden" name="purchase_date" value={{ values[6] }}></div>
+        <div class="title_area"> 総数:{{ values[7] }}<input type="hidden" name="total" value={{ values[7] }}></div>
+        <div class="title_area"> 在庫数:{{ values[8] }}<input type="hidden" name="stock" value={{ values[8] }}></div>
+        <div class="title_area"> 作成日:{{ values[9] }}<input type="hidden" name="created_at" value={{ values[9] }}></div>
+        <div class="title_area"> 更新日:{{ values[10] }}<input type="hidden" name="updated_at" value={{ values[10] }}></div>
+        <div class="title_area"> 直近の返却予定日:{{ values[12] }}<input type="hidden" name="expected_return_date" value={{ values[12] }}></div>
+        <div class="title_area"> ジャンル:{{ values[11] }}<input type="hidden" name="genre" value={{ values[11] }}></div>
+        <input type="hidden" name="book_id" value= {{ values[0] }}>
+        <input type="hidden" name="sc_title" value={{ title }}>
+        <div class="btns">
+            <input type="submit" value="戻る">
+            <input type="submit" value="カートに追加" formaction="/add_cart" formmethod="POST" {{disabled}}>
+            <input type="submit" value="編集" formaction="/book_edit" formmethod="GET">
+            <input type="submit" value="削除" formaction="/delete_book" formmethod="POST">
+        </div>
+    </div>
+</form>
+{% endblock %}

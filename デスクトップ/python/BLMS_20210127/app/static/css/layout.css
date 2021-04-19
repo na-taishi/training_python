@@ -1,0 +1,36 @@
+.step{
+	text-align: center;
+	padding-top: 10px;
+}
+
+.subject{
+	height:55%;
+	text-align: center;
+	margin-top: 10px;
+	background-color: #0000FF;
+	color: #FFFFFF;
+}
+
+.title_area{
+	margin:20px; 
+}
+
+.author_area{
+ margin: 20px;
+}
+
+.publisher_area{
+	margin: 20px;
+}
+
+.price_area{
+	margin: 20px;
+}
+
+.buyer_area{
+	margin: 20px;
+}
+
+.date_area{
+	margin: 20px;
+}

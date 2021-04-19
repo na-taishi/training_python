@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<link rel="stylesheet" href={{ css }}>
+{% for i in text_css %}
+<link rel="stylesheet" href={{i}} type="text/css" />
+{% endfor %}
+
+{% for i in text_script %}
+<script type="text/javascript" src={{i}}></script>
+{% endfor %}
+</head>
+<body>
+{% block content %}
+<!-- ここにメインコンテンツを書く -->
+{% endblock %}
+</body>
+</html>

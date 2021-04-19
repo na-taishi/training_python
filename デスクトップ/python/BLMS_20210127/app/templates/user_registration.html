@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/user_registration" method="POST">
+    <div class="step">
+        <div class="subject">ユーザー登録</div>
+        <div class="title_area"> 社員番号:<input type="text" name="employee_number" required></div>
+        <div class="title_area"> 氏名:<input type="text" name="name" required></div>
+        <div class="title_area"> 事業部:
+            <select name="division">
+                {% for division in divishons %}
+                <option value={{division}}>{{division}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="title_area"> メールアドレス:<input type="text" name="mail_address" required></div>
+        <div class="author_area"> パスワード:<input type="password" name="password" required></div>
+        <div class="btns">
+            <input type="submit" value="戻る" formaction="/login" formmethod="GET" formnovalidate>
+            <input type="submit" value="登録">
+        </div>
+    </div>
+</form>
+{% endblock %}
