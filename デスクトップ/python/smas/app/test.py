@@ -74,7 +74,25 @@ from config import file_conf as file
 
 
 # logic.temperature_analysis.export_excel(ym_li)
-logic.temperature_analysis.predict_temperature()
-
+# p = logic.temperature_analysis.predict_temperature(20,25,16,0,60,"ゴールデンウィーク")
+# print(p[0])
 # flg = logic.preparation.earthquake_data()
 # print(flg)
+
+weather_df = logic.temperature_analysis.join_weather()
+# ptrip_df =logic.temperature_analysis.get_popular_trip()
+# join_df = logic.temperature_analysis.join_season(weather_df,ptrip_df)
+# df_list = logic.temperature_analysis.divide_season(join_df)
+# #平均気温,最高気温,最低気温,最大震度,平均湿度,時期,地域
+# x_name = "平均気温"
+# y_name = "最高気温"
+# label_name = "時期"
+# png_flg = logic.temperature_analysis.export_png(df_list,x_name,y_name,label_name)
+# excel_flg = logic.temperature_analysis.export_excel(join_df)
+# print(excel_flg)
+
+
+# pr = common.pptx_operation.exec_pptx()
+# print(pr)
+
+common.pptx_operation.create_chart(weather_df)

@@ -6,3 +6,4 @@ from . import graph
 from . import screen_creation
 from . import web_scraping
 from . import graph_matplotlib
+from . import pptx_operation

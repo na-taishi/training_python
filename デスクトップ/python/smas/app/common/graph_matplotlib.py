@@ -1,5 +1,7 @@
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
+matplotlib.use('Agg')
 import japanize_matplotlib
 
 from config.color_conf import COLOR as COLOR
@@ -16,10 +18,14 @@ def create_scatter(df_list,x_name,y_name,label_name):
 	ax.grid()
 	ax.set_xlabel(x_name)
 	ax.set_ylabel(y_name)
-	plt.show()
-	# fig.savefig('figure.png')
+	# plt.show()
 	return fig
 
 #png出力
 def output_png(fig,path):
-	fig.savefig(path)
+	flg = True
+	try:
+		fig.savefig(path)
+	except:
+		flg = False
+	return flg

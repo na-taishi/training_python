@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/temperature/analyze" method="POST">
+        <select name="x_val">
+                {% for analysis in analysis_list %}
+                <option value={{analysis}}>{{analysis}}</option>
+                {% endfor %}
+        </select>
+        <select name="y_val">
+                {% for analysis in analysis_list %}
+                <option value={{analysis}}>{{analysis}}</option>
+                {% endfor %}
+        </select>
+        <input type="submit" value="送信">
+</form>
+<form action="/download" method="GET">
+        <input type="submit" value="ダウンロード">
+</form>
+<p><img src={{png_path}} alt="pic01"></p>
+{% endblock %}

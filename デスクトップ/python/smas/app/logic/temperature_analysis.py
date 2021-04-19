@@ -29,6 +29,10 @@ sql_earthquake = common.db_sql.sql_dict["地震"]
 #湿度データ
 sql_humidity = common.db_sql.sql_dict["湿度"]
 
+#人気の旅行先データフレーム作成
+def get_popular_trip():
+	df = common.pandas_data.get_table(sql_ptrip)
+	return df
 
 #地震データを加工
 def transform_earthquake():
@@ -113,22 +117,26 @@ def join_weather():
 	join_df = outerjoin_df[['発生日','year', 'month','地域', '平均気温', '最高気温', '最低気温','マグニチュード', '最大震度','平均湿度', '平均風速']]
 	return join_df
 
+
+
+# #気象データと紐づけるランキングデータを用意
+# def prepare_ptrip_df():
+# 	df = common.pandas_data.get_table(sql_ptrip)
+# 	df['年'] -= 1
+# 	return df
+
+
 #気象とランキングを結合
-def join_season():
-	#結合するデータフレームを用意
-	ptrip_df = common.pandas_data.get_table(sql_ptrip)
-	weather_df = join_weather()
+def join_season(weather_df,ptrip_df):
 	#気象データフレームに時期のカラムを追加
 	weather_df.loc[(weather_df['month'] == 4) | (weather_df['month'] == 5) ,"時期"] = "ゴールデンウィーク"
 	#夏休み(7-8)
 	weather_df.loc[(weather_df['month'] == 7) | (weather_df['month'] == 8) ,"時期"] = "夏休み"
 	#年末年始(12-1)
 	weather_df.loc[(weather_df['month'] == 12) | (weather_df['month'] == 1) ,"時期"] = "年末年始"
-	#年度で判定するために、1月の年をマイナス1する
-	weather_df.loc[weather_df['month'] == 1,"year"] -= 1
-	#前年の気象データと紐づけるようにする
-	ptrip_df['年'] -= 1
-	#気象データと各連休データを結合
+	# #年度で判定するために、1月の年をマイナス1する
+	# weather_df.loc[weather_df['month'] == 1,"year"] -= 1
+	#気象データとランキングデータを結合
 	df_list = [weather_df,ptrip_df]
 	left_list = [["year","地域","時期"]]
 	right_list = [["年","旅行先","時期"]]
@@ -138,12 +146,17 @@ def join_season():
 	join_df.drop(columns=del_cols,inplace=True)
 	return join_df
 
-#時期毎に分ける(未使用)
-def divide_season(df):
-	col_name = "時期"
-	col_values = ["ゴールデンウィーク","夏休み","年末年始"]
-	season_df_list = [df.loc[df[col_name] == value] for value in col_values]
-	return season_df_list
+#機械学習用に加工
+def process_for_learning():
+	ptrip_df = get_popular_trip()
+	weather_df = join_weather()
+	#気象データと紐づけるために年をマイナス1(前年度の気象データより、当年の旅行先が決定すると想定)
+	ptrip_df['年'] -= 1
+	# 年度で判定するために、1月の年をマイナス1する
+	weather_df.loc[weather_df['month'] == 1,"year"] -= 1
+	#結合
+	join_df = join_season(weather_df,ptrip_df)
+	return join_df
 
 #快適な気温にフラグを立てる
 def set_temperature_flg(df):
@@ -187,18 +200,6 @@ def add_demand_flg(df):
 	df.loc[(df['month'] == 12) & (df['month'] == 1),'時期'] = "年末年始"
 	return df
 
-#png_test
-def export_png(df,x_name,y_name,label_name):
-	fig = common.graph_matplotlib.create_scatter(df,x_name,y_name,label_name)
-	pmg_path = file.png_export_path("sales_count")
-	# common.graph_matplotlib.output_png(fig,pmg_path)
-
-#excel_test
-def export_excel(df):
-	excel_path = file.excel_export_path("sales_amount")
-	sheet_name = "test"
-	index_flg = False
-	df.to_excel(excel_path, sheet_name=sheet_name,index=index_flg)
 
 #各フラグを付ける(需要フラグ除く)
 def add_flg(df):
@@ -219,9 +220,8 @@ def create_pred_model(val1,val2,val3,val4,val5,val6):
 	return X_pred
 
 
-#機械学習
-def predict_temperature():
-	join_df = join_season()
+#機械学習(データフレーム,平均気温, 最高気温, 最低気温,最大震度,平均湿度,時期を引数に渡す)
+def predict_temperature(join_df,avg_tem,max_tem,min_tem,mag,hum,timing):
 	flg_df = add_flg(join_df)
 	df = add_demand_flg(flg_df)
 	# df = pd.get_dummies(df,drop_first = True,columns=['時期'])
@@ -238,7 +238,42 @@ def predict_temperature():
 	#精度表示
 	print("score=", clf.score(X_test, y_test))
 	#'平均気温', '最高気温', '最低気温', '最大震度', '平均湿度', '平均気温_flg', '最高気温_flg','最低気温_flg', '最大震度_flg', 'good_flg'
-	X_pred = create_pred_model(20,25,14,0,60,"ゴールデンウィーク")
+	X_pred = create_pred_model(avg_tem,max_tem,min_tem,mag,hum,timing)
 	y_pred = clf.predict(X_pred)
 	# y_pred = clf.predict(X_test)
-	print(y_pred)
+	return y_pred
+
+#時期毎に分ける(未使用)
+def divide_season(df):
+	col_name = "時期"
+	col_values = ["ゴールデンウィーク","夏休み","年末年始"]
+	season_df_list = [df.loc[df[col_name] == value] for value in col_values]
+	return season_df_list
+
+#png出力
+def export_png(df_list,x_name,y_name,label_name):
+	fig = common.graph_matplotlib.create_scatter(df_list,x_name,y_name,label_name)
+	png_path = file.png_export_path("temperature_analysis")
+	flg = common.graph_matplotlib.output_png(fig,png_path)
+	print(flg)
+	return png_path
+
+#excel出力
+def export_excel(df):
+	file_name = "temperature_analysis"
+	png_path = file.png_export_path(file_name)
+	excel_path = file.excel_export_path(file_name)
+	sheet_name = "data"
+	index_flg = False
+	#データ整理
+	df['年月'] = df['year'].astype(str) + "年" +df['month'].astype(str) + "月"
+	df.sort_values(['地域','year','month'],inplace=True)
+	# df.sort_values(['地域','年月'],inplace=True)
+	col_del = ["year","month","時期"]
+	df.drop(columns=col_del,inplace=True)
+	df = df.reindex(columns=['地域','年月','平均気温','最高気温','最低気温','平均湿度','最大震度'])
+	#エクセル出力
+	df.to_excel(excel_path, sheet_name=sheet_name,index=index_flg)
+	position = "B" + str(len(df) + 5)
+	flg = common.excel.paste_image(excel_path,png_path,position)
+	return flg

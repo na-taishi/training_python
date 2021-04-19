@@ -65,7 +65,9 @@ import_path_dict ={
 	#prediction
 	"sales_amount":import_path,
 	"sales_count":import_path,
-	"monthly_sales":import_path
+	"monthly_sales":import_path,
+	#temperature_analysis
+	"temperature_analysis":import_path
 }
 
 #出力パスの辞書(関数名で値を取得)
@@ -92,7 +94,9 @@ export_path_dict ={
 	#prediction
 	"sales_amount":export_path,
 	"sales_count":export_path,
-	"monthly_sales":export_path
+	"monthly_sales":export_path,
+	#temperature_analysis
+	"temperature_analysis":export_path
 }
 
 #読み込むファイル名のの辞書(関数名で値を取得)
@@ -118,7 +122,9 @@ import_name_dict ={
 	#prediction
 	"sales_amount":"取扱金額予測(取扱額)",
 	"sales_count":"取扱金額予測(取扱人数)",
-	"monthly_sales":"月毎の取扱金額予測"
+	"monthly_sales":"月毎の取扱金額予測",
+	#temperature_analysis
+	"temperature_analysis":"気象データ"
 }
 
 #出力ファイル名の辞書(関数名で値を取得)
@@ -144,5 +150,7 @@ export_name_dict ={
 	#prediction
 	"sales_amount":"取扱金額予測(取扱額)",
 	"sales_count":"取扱金額予測(取扱人数)",
-	"monthly_sales":"月毎の取扱金額予測"
+	"monthly_sales":"月毎の取扱金額予測",
+	#temperature_analysis
+	"temperature_analysis":"気象データ"
 }

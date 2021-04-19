@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/handling_price/pred/exec" method="POST">
+        <select name="switch">
+                <option value=取扱額>取扱人数を予測</option>
+                <option value=取扱人数（人）>取扱額を予測</option>
+        </select>
+        <input type="number" name="num">
+        <input type="submit" value="送信">
+</form>
+<!-- <form action="/download" method="GET">
+        <input type="submit" value="ダウンロード">
+</form>
+<p><img src={{png_path}} alt="pic01"></p> -->
+{% endblock %}

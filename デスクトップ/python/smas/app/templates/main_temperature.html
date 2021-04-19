@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/temperature/analyze" method="GET">
+        <input type="submit" value="グラフ表示">
+</form>
+<form action="/temperature/pred" method="GET">
+        <input type="submit" value="予測表示">
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/temperature/pred/exec" method="POST">
+        <input type="number" name="avg_tem" placeholder="平均気温">
+        <input type="number" name="max_tem" placeholder="最高気温">
+        <input type="number" name="min_tem" placeholder="最低気温">
+        <input type="number" name="mag" placeholder="震度">
+        <input type="number" name="hum" placeholder="平均湿度">
+        <select name="timing">
+        	<option value="ゴールデンウィーク">ゴールデンウィーク</option>
+        	<option value="夏休み">夏休み</option>
+        	<option value="年末年始">年末年始</option>
+        </select>
+        <input type="submit" value="送信">
+</form>
+{% endblock %}
